@@ -75,8 +75,8 @@ if ($_GET['act'] == 'imprimir') {
                                   <td width='100' align='left'>$t_p_descrip</td>
                                   <td width='80' align='left'>$p_descrip</td>
                                   <td width='80' align='left'>$u_medida</td>
-                                  <td width='80' align='left'>$cantidad</td>
                                   <td width='80' align='left'>$precio</td>
+                                  <td width='80' align='left'>$cantidad</td>
                                   </tr>";
                 }
                 ?>

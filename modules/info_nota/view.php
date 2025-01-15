@@ -28,11 +28,11 @@
                     <form method="POST" class="row g-3">
                         <div class="col-md-4">
                             <label for="fecha_desde" class="form-label">Fecha Desde</label>
-                            <input type="date" class="form-control" name="fecha_desde" id="fecha_desde" required>
+                            <input type="date" class="form-control" name="fecha_desde" id="fecha_desde" value="<?php echo $fecha_desde ?? null; ?>" required>
                         </div>
                         <div class="col-md-4">
                             <label for="fecha_hasta" class="form-label">Fecha Hasta</label>
-                            <input type="date" class="form-control" name="fecha_hasta" id="fecha_hasta" required>
+                            <input type="date" class="form-control" name="fecha_hasta" id="fecha_hasta" value="<?php echo $fecha_hasta ?? null; ?>" required>
                         </div>
                         <div class="col-md-4">
                             <label for="estado" class="form-label">Estado</label>
@@ -73,6 +73,13 @@
             <div class="card mt-4">
                 <div class="card-header">
                     <h2 class="h4">Resultados</h2>
+                    <div class="col-mt-12">
+                        <a href='modules/info_nota/print.php?act=imprimir&fecha_desde=<?php echo $fecha_desde;?>&fecha_hasta=<?php echo $fecha_hasta; ?>&estado=<?php echo $estado; ?>' target="blank_">
+                            <button type="submit" class="btn btn-warning">
+                                <i class='cil-print'></i>Imprimir
+                            </button>
+                        </a>
+                    </div>
                 </div>
                 <div class="card-body">
                     <table class="table table-striped table-hover">
@@ -108,7 +115,7 @@
                                             <td class='text-center'>{$data['cantidad']}</td>
                                             <td class='text-center'>{$data['monto']}</td>
                                             <td class='text-center'>{$data['razon']}</td>
-                                            <td class='text-center'>{$data['estado']}</td>
+                                            <td class='text-center'>{$data['estado']}</td>   
                                         </tr>";
                                 }
                             } else {

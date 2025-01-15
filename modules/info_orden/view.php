@@ -64,7 +64,7 @@
                     SELECT * 
                     FROM v_orden
                     WHERE fecha BETWEEN '$fecha_desde' AND '$fecha_hasta'
-                      AND estado = '$estado'
+                      AND estado = '$estado' ORDER BY id_orden ASC
                 ") or die('Error: ' . mysqli_error($mysqli));
             } else {
                 $query = false;
@@ -73,6 +73,13 @@
             <div class="card mt-4">
                 <div class="card-header">
                     <h2 class="h4">Resultados</h2>
+                    <div class="col-mt-12">
+                        <a href='modules/info_orden/print.php?act=imprimir&fecha_desde=<?php echo $fecha_desde;?>&fecha_hasta=<?php echo $fecha_hasta; ?>&estado=<?php echo $estado; ?></a>' target="blank_">
+                            <button type="submit" class="btn btn-warning">
+                                <i class='cil-print'></i>Imprimir
+                            </button>
+                        </a>
+                    </div>
                 </div>
                 <div class="card-body">
                     <table class="table table-striped table-hover">
@@ -95,18 +102,18 @@
                             if ($query) {
                                 while ($data = mysqli_fetch_assoc($query)) {
                                     echo "<tr>
-                                            <td class='text-center'>{$data['id_orden_comp']}</td>
+                                            <td class='text-center'>{$data['id_orden']}</td>
                                             <td class='text-center'>{$data['id_presupuesto']}</td>
                                             <td class='text-center'>{$data['name_user']}</td>
                                             <td class='text-center'>{$data['fecha']}</td>
                                             <td class='text-center'>{$data['hora']}</td>
                                             <td class='text-center'>{$data['p_descrip']}</td>
-                                            <td class='text-center'>{$data['cantidad_aprobada']}</td>
+                                            <td class='text-center'>{$data['cant_aprob']}</td>
                                             <td class='text-center'>{$data['precio_unit']}</td>";
-                                    $total = ($data['cantidad_aprobada'] * $data['precio_unit']);
-                                    echo "
-                                    <td class='text-center'>{$total}</td>
-                                    <td class='text-center'>{$data['estado']}</td>
+                                            $total = ($data['cant_aprob'] * $data['precio_unit']);
+                                            echo "
+                                            <td class='text-center'>{$total}</td>
+                                            <td class='text-center'>{$data['estado']}</td>
                                         </tr>";
                                 }
                             } else {

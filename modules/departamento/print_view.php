@@ -15,9 +15,6 @@ $query = mysqli_query($mysqli, "SELECT * FROM departamento")
     </head>
     <body>
         <div align="center">
-            <img src="../../images/user/campo.jpg">
-        </div>
-        <div>
             Reporte de ciudad
         </div>
         <div align="center">

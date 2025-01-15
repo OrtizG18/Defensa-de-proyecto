@@ -19,9 +19,6 @@ $count = mysqli_num_rows($query);
     </head>
     <body>
         <div align="center">
-            <img src="../../images/ciudades.jpg">
-        </div>
-        <div>
             Reporte de Ciudad
         </div>
 <div align="center">

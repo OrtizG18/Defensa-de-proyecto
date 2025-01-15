@@ -1,8 +1,8 @@
 <?php
 require_once "../../config/database.php";
 
-$query = mysqli_query($mysql, "SELECT *FROM v_clientes")
-    or die("Error: " . mysqli_error($mysql));
+$query = mysqli_query($mysqli, "SELECT *FROM v_clientes")
+    or die("Error: " . mysqli_error($mysqli));
 
 $count = mysqli_num_rows($query);
 ?>
@@ -18,10 +18,7 @@ $count = mysqli_num_rows($query);
 
 <body>
     <div align="center">
-        <img src="../../images/user/Salsa y picante.jpg" alt="">
-    </div>
-    <div>
-        Reporte de ciudad
+        Reporte de clientes
     </div>
     <div align="center">
         Cantidad: <?php echo $count; ?>
