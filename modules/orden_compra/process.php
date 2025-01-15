@@ -20,23 +20,56 @@ if (empty($_SESSION['username']) && empty($_SESSION['password'])) {
             FROM tmp
             ");
 
+            $validacion_correcta = true; // Bandera/variable para verificar cantidades
+
             while ($row = mysqli_fetch_array($sql)) {
-            $codigo_producto = $row['id_producto'];
-            $cant_tmp = $row['cantidad_tmp'];
-            $precio_tmp = $row['precio_tmp'];
+                $codigo_producto = $row['id_producto'];
+                $cant_tmp = $row['cantidad_tmp'];
+                $precio_tmp = $row['precio_tmp'];
 
-            // Verificar si ya existe el registro antes de insertar
-            $check_query = mysqli_query($mysqli, "
-                SELECT * FROM det_orden_comp 
-                WHERE id_orden = $codigo AND cod_producto = $codigo_producto
-            ");
+                // Obtener cantidad presupuestada
+                $query_presupuesto = mysqli_query($mysqli, "
+                    SELECT cantidad 
+                    FROM det_presu 
+                    WHERE cod_producto = $codigo_producto
+                ");
 
-            if (mysqli_num_rows($check_query) == 0) {
-                $insert_detalle = mysqli_query($mysqli, "
-                    INSERT INTO det_orden_comp (id_orden, cod_producto, cant_aprob, precio_unit) 
-                    VALUES ($codigo, $codigo_producto, $cant_tmp, $precio_tmp)
-                ") or die('Error: ' . mysqli_error($mysqli));
+                $row_presupuesto = mysqli_fetch_array($query_presupuesto);
+                $cantidad_presupuestada = $row_presupuesto['cantidad'];
+
+                // Validar cantidad
+                if ($cant_tmp != $cantidad_presupuestada) {
+                    $validacion_correcta = false;
+                    break; // Salir del bucle si hay discrepancia
+                }
             }
+
+            if (!$validacion_correcta) {
+                // Redirigir con alerta si las cantidades no coinciden
+                header("Location: ../../main.php?module=orden_compra&alert=5");
+                exit;
+            }
+
+            // Si la validación es correcta, proceder con la inserción
+            mysqli_data_seek($sql, 0); // Reiniciar el puntero del resultado para volver a recorrerlo
+
+            while ($row = mysqli_fetch_array($sql)) {
+                $codigo_producto = $row['id_producto'];
+                $cant_tmp = $row['cantidad_tmp'];
+                $precio_tmp = $row['precio_tmp'];
+
+                // Verificar si ya existe el registro antes de insertar
+                $check_query = mysqli_query($mysqli, "
+                    SELECT * FROM det_orden_comp 
+                    WHERE id_orden = $codigo AND cod_producto = $codigo_producto
+                ");
+
+                if (mysqli_num_rows($check_query) == 0) {
+                    $insert_detalle = mysqli_query($mysqli, "
+                        INSERT INTO det_orden_comp (id_orden, cod_producto, cant_aprob, precio_unit) 
+                        VALUES ($codigo, $codigo_producto, $cant_tmp, $precio_tmp)
+                    ") or die('Error: ' . mysqli_error($mysqli));
+                }
             }
 
             // Obtener datos del pedido desde tmp_orden
@@ -56,11 +89,10 @@ if (empty($_SESSION['username']) && empty($_SESSION['password'])) {
 
             // Redirigir según el resultado
             if ($query) {
-            header("Location: ../../main.php?module=orden_compra&alert=1");
+                header("Location: ../../main.php?module=orden_compra&alert=1");
             } else {
-            header("Location: ../../main.php?module=orden_compra&alert=3");
+                header("Location: ../../main.php?module=orden_compra&alert=3");
             }
-
         }
     } elseif ($_GET['act'] == 'anular') {
         if (isset($_GET['id_orden'])) {

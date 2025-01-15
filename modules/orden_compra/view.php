@@ -45,7 +45,14 @@
                         Orden de compra aprobado.
                     </div>";
                 }
-            }
+                    elseif ($_GET["alert"] == 5) {
+                        echo "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                            <button type='button' class='btn-close' data-coreui-dismiss='alert' aria-label='Close'></button>
+                            <h4><i class='fa fa-check-circle'></i> Error!!</h4>
+                            La cantidad ingresada es diferente a la cantidad del presupuesto
+                        </div>";
+                    }
+                }
             ?>
 
             <div class="card">
